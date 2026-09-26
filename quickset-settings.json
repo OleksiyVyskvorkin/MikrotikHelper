@@ -1,0 +1,20 @@
+[
+  {
+    "Router": "MikroTik 1",
+    "LocalIp": "192.168.91.1/24",
+    "DhcpRange": "192.168.91.10-192.168.91.254",
+    "WireGuardIp": "192.168.33.1/24",
+    "PublicKey": "2ZliqV6JJlujh6dz0U6WpoHAVei2hcoT9XZ7e7tdFRQ=",
+    "ListenPort": 13231,
+    "WanEndpoint": ""
+  },
+  {
+    "Router": "MikroTik 2",
+    "LocalIp": "192.168.92.1/24",
+    "DhcpRange": "192.168.92.10-192.168.92.254",
+    "WireGuardIp": "192.168.33.2/24",
+    "PublicKey": "TWdPkYH/e4dxUjRYumda6xypiYVqAbd1IR\u002BXxWSXTXY=",
+    "ListenPort": 13231,
+    "WanEndpoint": "74.244.126.127"
+  }
+]

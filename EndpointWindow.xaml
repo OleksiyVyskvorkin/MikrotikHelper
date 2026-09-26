@@ -1,0 +1,17 @@
+<Window x:Class="MikrotikHelper.EndpointWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Публічний Endpoint" Width="520" Height="230" ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner" ShowInTaskbar="False" Topmost="True"
+        Background="{StaticResource PageBrush}">
+  <Grid Margin="20">
+    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition/></Grid.RowDefinitions>
+    <TextBlock Text="Публічний статичний IP Address" Foreground="White" FontSize="18" FontWeight="Bold"/>
+    <TextBox x:Name="EndpointBox" Grid.Row="1" Margin="0,15,0,0" FontSize="15"/>
+    <TextBlock x:Name="ErrorText" Grid.Row="2" Margin="0,7,0,0" Foreground="#F06F78" FontSize="11"/>
+    <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+      <Button Content="Скасувати" Width="105" Margin="0,0,8,0" Click="Cancel_Click"/>
+      <Button Content="Зберегти" Width="105" Background="{StaticResource AccentBrush}" Foreground="#07150F" FontWeight="Bold" Click="Save_Click"/>
+    </StackPanel>
+  </Grid>
+</Window>

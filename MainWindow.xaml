@@ -1,0 +1,59 @@
+<Window x:Class="MikrotikHelper.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:MikrotikHelper"
+        Title="MikroTik Helper — RouterOS API 8728" Width="1400" Height="620" MinWidth="1050" MinHeight="520"
+        WindowStartupLocation="CenterScreen" Background="{StaticResource PageBrush}">
+  <Grid>
+    <Grid.RowDefinitions><RowDefinition Height="44"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition/></Grid.RowDefinitions>
+    <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="1"/><ColumnDefinition/></Grid.ColumnDefinitions>
+    <Border Grid.ColumnSpan="3" Background="#101722" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1">
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Button Content="Інструкція" Padding="18,7" Click="Instruction_Click"/>
+        <Button Content="Видалення налаштувань" Margin="10,0,0,0" Padding="18,7" Background="#9E3440" Foreground="White" Click="DeleteSavedSettings_Click"/>
+        <Button Content="Публічний Endpoint" Margin="10,0,0,0" Padding="18,7" Click="ShowPublicEndpoint_Click"/>
+      </StackPanel>
+    </Border>
+    <local:RouterPanel x:Name="LeftRouter" Grid.Row="1" Grid.Column="0" RouterTitle="MikroTik 1" RouterNumber="01" DefaultInterfaceName="wg1"/>
+    <Border Grid.Row="1" Grid.Column="1" Background="{StaticResource BorderBrush}"/>
+    <local:RouterPanel x:Name="RightRouter" Grid.Row="1" Grid.Column="2" RouterTitle="MikroTik 2" RouterNumber="02" DefaultInterfaceName="wg2"/>
+    <Border x:Name="PeersCard" Grid.Row="3" Grid.Column="0" Visibility="Collapsed" Margin="28,0,14,14" Background="{StaticResource CardBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="10">
+      <Grid>
+        <Grid.RowDefinitions><RowDefinition Height="38"/><RowDefinition x:Name="PeersTabsRow" Height="32"/><RowDefinition x:Name="PeersContentRow" Height="Auto"/><RowDefinition x:Name="PeersActionsRow" Height="Auto"/></Grid.RowDefinitions>
+        <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1" Padding="14,0"><Grid><TextBlock Text="◇  Peers" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/><Button x:Name="CollapsePeersButton" Content="−" HorizontalAlignment="Right" Width="28" Height="24" Padding="0" Background="Transparent" FontSize="16" ToolTip="Згорнути" Click="CollapsePeers_Click"/></Grid></Border>
+        <Border x:Name="PeersTabsBar" Grid.Row="1" Background="#151C27" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1"><StackPanel Orientation="Horizontal" HorizontalAlignment="Center"><Button x:Name="CreatePeersTabButton" Content="Створення" Padding="14,5" Background="#213536" Click="CreatePeersTab_Click"/><Button x:Name="ExistingPeersTabButton" Content="Наявні піри" Padding="14,5" Background="Transparent" Click="ExistingPeersTab_Click"/><Button x:Name="DeletePeersTabButton" Content="Видалення" Padding="14,5" Foreground="#E8A0A8" Background="Transparent" Click="DeletePeersTab_Click"/></StackPanel></Border>
+        <Grid x:Name="CreatePeersView" Grid.Row="2">
+          <Grid.ColumnDefinitions><ColumnDefinition/></Grid.ColumnDefinitions>
+          <Grid Margin="18,9,18,8">
+            <Grid.RowDefinitions><RowDefinition Height="34"/><RowDefinition Height="34"/><RowDefinition Height="42"/></Grid.RowDefinitions>
+            <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="82"/><ColumnDefinition/></Grid.ColumnDefinitions><TextBlock Text="Name" Foreground="{StaticResource MutedBrush}" VerticalAlignment="Center"/><TextBox x:Name="LeftPeerName" Grid.Column="1" Text="peer-mikrotik-2"/></Grid>
+            <Grid Grid.Row="1"><Grid.ColumnDefinitions><ColumnDefinition Width="82"/><ColumnDefinition/></Grid.ColumnDefinitions><TextBlock Text="Allowed Address" Foreground="{StaticResource MutedBrush}" FontSize="10" VerticalAlignment="Center"/><TextBox x:Name="LeftAllowedAddress" Grid.Column="1" IsReadOnly="True" ToolTip="Заповнюється адресою WireGuard-інтерфейсу MikroTik 2"/></Grid>
+            <Button x:Name="CreateLeftPeerButton" Grid.Row="2" Content="Створити на MikroTik 1" HorizontalAlignment="Center" Margin="0,7,0,0" Background="{StaticResource AccentBrush}" Foreground="#07150F" FontWeight="Bold" Click="CreateLeftPeer_Click"/>
+          </Grid>
+        </Grid>
+        <Grid x:Name="ExistingPeersView" Grid.Row="2" Visibility="Collapsed">
+          <Grid.ColumnDefinitions><ColumnDefinition/></Grid.ColumnDefinitions>
+          <ScrollViewer Margin="14,9" MaxHeight="190" VerticalScrollBarVisibility="Auto"><StackPanel x:Name="LeftPeersList"/></ScrollViewer>
+        </Grid>
+        <Grid x:Name="DeletePeersView" Grid.Row="2" Visibility="Collapsed">
+          <Grid.ColumnDefinitions><ColumnDefinition/></Grid.ColumnDefinitions>
+          <ScrollViewer Margin="14,9" MaxHeight="190" VerticalScrollBarVisibility="Auto"><StackPanel x:Name="LeftDeletePeersList"/></ScrollViewer>
+        </Grid>
+        <Border x:Name="PeersActions" Grid.Row="3" Background="#151C27" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,0,0" Padding="14,8">
+          <Grid><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock x:Name="PeerStatus" Foreground="#E9AA57" FontSize="10" VerticalAlignment="Center" TextWrapping="Wrap"/><StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right"><TextBlock Text="Keepalive" Foreground="{StaticResource MutedBrush}" VerticalAlignment="Center" Margin="0,0,7,0"/><TextBox x:Name="KeepaliveBox" Text="20" Width="45"/></StackPanel></Grid>
+        </Border>
+      </Grid>
+    </Border>
+    <Border x:Name="RightPeersCard" Grid.Row="3" Grid.Column="2" Visibility="Collapsed" Margin="14,0,28,14" Background="{StaticResource CardBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="10">
+      <Grid>
+        <Grid.RowDefinitions><RowDefinition Height="38"/><RowDefinition x:Name="RightPeersTabsRow" Height="32"/><RowDefinition x:Name="RightPeersContentRow" Height="Auto"/><RowDefinition x:Name="RightPeersActionsRow" Height="Auto"/></Grid.RowDefinitions>
+        <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1" Padding="14,0"><Grid><TextBlock Text="◇  Peers" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/><Button x:Name="CollapseRightPeersButton" Content="−" HorizontalAlignment="Right" Width="28" Height="24" Padding="0" Background="Transparent" FontSize="16" Click="CollapseRightPeers_Click"/></Grid></Border>
+        <Border x:Name="RightPeersTabsBar" Grid.Row="1" Background="#151C27" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1"><StackPanel Orientation="Horizontal" HorizontalAlignment="Center"><Button x:Name="RightCreatePeersTabButton" Content="Створення" Padding="14,5" Background="#213536" Click="RightCreatePeersTab_Click"/><Button x:Name="RightExistingPeersTabButton" Content="Наявні піри" Padding="14,5" Background="Transparent" Click="RightExistingPeersTab_Click"/><Button x:Name="RightDeletePeersTabButton" Content="Видалення" Padding="14,5" Foreground="#E8A0A8" Background="Transparent" Click="RightDeletePeersTab_Click"/></StackPanel></Border>
+        <Grid x:Name="RightCreatePeersView" Grid.Row="2" Margin="18,9,18,8"><Grid.RowDefinitions><RowDefinition Height="34"/><RowDefinition Height="34"/><RowDefinition Height="34"/><RowDefinition Height="42"/></Grid.RowDefinitions><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="82"/><ColumnDefinition/></Grid.ColumnDefinitions><TextBlock Text="Name" Foreground="{StaticResource MutedBrush}" VerticalAlignment="Center"/><TextBox x:Name="RightPeerName" Grid.Column="1" Text="peer-mikrotik-1"/></Grid><Grid Grid.Row="1"><Grid.ColumnDefinitions><ColumnDefinition Width="82"/><ColumnDefinition/></Grid.ColumnDefinitions><TextBlock Text="Allowed Address" Foreground="{StaticResource MutedBrush}" FontSize="10" VerticalAlignment="Center"/><TextBox x:Name="RightAllowedAddress" Grid.Column="1" IsReadOnly="True"/></Grid><Grid Grid.Row="2"><Grid.ColumnDefinitions><ColumnDefinition Width="82"/><ColumnDefinition/></Grid.ColumnDefinitions><TextBlock Text="Endpoint" Foreground="{StaticResource MutedBrush}" VerticalAlignment="Center"/><TextBox x:Name="PublicEndpointBox" Grid.Column="1" LostFocus="PublicEndpointBox_LostFocus" ToolTip="Публічна статична IP-адреса першого Starlink"/></Grid><Button x:Name="CreateRightPeerButton" Grid.Row="3" Content="Створити на MikroTik 2" HorizontalAlignment="Center" Margin="0,7,0,0" Background="{StaticResource AccentBrush}" Foreground="#07150F" FontWeight="Bold" Click="CreateRightPeer_Click"/></Grid>
+        <ScrollViewer x:Name="RightExistingPeersView" Grid.Row="2" Visibility="Collapsed" Margin="14,9" MaxHeight="190" VerticalScrollBarVisibility="Auto"><StackPanel x:Name="RightPeersList"/></ScrollViewer>
+        <ScrollViewer x:Name="RightDeletePeersView" Grid.Row="2" Visibility="Collapsed" Margin="14,9" MaxHeight="190" VerticalScrollBarVisibility="Auto"><StackPanel x:Name="RightDeletePeersList"/></ScrollViewer>
+        <Border x:Name="RightPeersActions" Grid.Row="3" Background="#151C27" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,0,0" Padding="14,8"><Grid><TextBlock x:Name="RightPeerStatus" Foreground="#E9AA57" FontSize="10" VerticalAlignment="Center" TextWrapping="Wrap"/></Grid></Border>
+      </Grid>
+    </Border>
+  </Grid>
+</Window>

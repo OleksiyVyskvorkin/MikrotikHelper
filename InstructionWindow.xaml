@@ -1,0 +1,78 @@
+<Window x:Class="MikrotikHelper.InstructionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Інструкція" Width="840" Height="820" MinWidth="680" MinHeight="680"
+        WindowStartupLocation="CenterOwner" ResizeMode="CanResize" ShowInTaskbar="False"
+        Topmost="True" Background="{StaticResource PageBrush}">
+  <Grid Margin="20">
+    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+    <TextBlock Text="Інструкція" Foreground="White" FontSize="22" FontWeight="Bold" Margin="0,0,0,18"/>
+    <Border Grid.Row="1" Background="{StaticResource CardBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="18">
+      <ScrollViewer VerticalScrollBarVisibility="Auto">
+      <StackPanel Margin="0,0,10,0">
+        <Grid Margin="0,0,0,18">
+          <Grid.ColumnDefinitions><ColumnDefinition Width="32"/><ColumnDefinition/></Grid.ColumnDefinitions>
+          <TextBlock Text="1." Foreground="{StaticResource AccentBrush}" FontSize="16" FontWeight="Bold"/>
+          <TextBlock Grid.Column="1" Text="Натисніть на кнопку Видалення налаштувань"
+                     Foreground="{StaticResource TextBrush}" FontSize="16" TextWrapping="Wrap" LineHeight="24"/>
+        </Grid>
+        <Grid Margin="0,0,0,18">
+          <Grid.ColumnDefinitions><ColumnDefinition Width="32"/><ColumnDefinition/></Grid.ColumnDefinitions>
+          <TextBlock Text="2." Foreground="{StaticResource AccentBrush}" FontSize="16" FontWeight="Bold"/>
+          <TextBlock Grid.Column="1" Text="З'єднати пристрій з мікротіком за допомогою кабелю в роз'єм підписаний як Lan і заживити мікротік. Порт Wan(Internet) має бути вільним покищо."
+                     Foreground="{StaticResource TextBrush}" FontSize="16" TextWrapping="Wrap" LineHeight="24"/>
+        </Grid>
+        <Grid>
+          <Grid.ColumnDefinitions><ColumnDefinition Width="32"/><ColumnDefinition/></Grid.ColumnDefinitions>
+          <TextBlock Text="3." Foreground="{StaticResource AccentBrush}" FontSize="16" FontWeight="Bold"/>
+          <TextBlock Grid.Column="1" Text="Введіть пароль написаний на мікротіку і натисніть Connect."
+                     Foreground="{StaticResource TextBrush}" FontSize="16" TextWrapping="Wrap" LineHeight="24"/>
+        </Grid>
+        <Grid Margin="0,18,0,0">
+          <Grid.ColumnDefinitions><ColumnDefinition Width="32"/><ColumnDefinition/></Grid.ColumnDefinitions>
+          <TextBlock Text="4." Foreground="{StaticResource AccentBrush}" FontSize="16" FontWeight="Bold"/>
+          <TextBlock Grid.Column="1" Text="У вікні Quick Set зміни Local IP з підмережі 88 на іншу в діапазоні від 1 до 254. Нове число має бути унікальним і не дорівнювати підмережі іншого мікротіка"
+                     Foreground="{StaticResource TextBrush}" FontSize="16" TextWrapping="Wrap" LineHeight="24"/>
+        </Grid>
+        <Grid Margin="0,18,0,0">
+          <Grid.ColumnDefinitions><ColumnDefinition Width="32"/><ColumnDefinition/></Grid.ColumnDefinitions>
+          <TextBlock Text="5." Foreground="{StaticResource AccentBrush}" FontSize="16" FontWeight="Bold"/>
+          <TextBlock Grid.Column="1" Text="в DHCP Range необхідно замінити 88 підмережу на ту, що ви встановили в Local IP"
+                     Foreground="{StaticResource TextBrush}" FontSize="16" TextWrapping="Wrap" LineHeight="24"/>
+        </Grid>
+        <Grid Margin="0,18,0,0">
+          <Grid.ColumnDefinitions><ColumnDefinition Width="32"/><ColumnDefinition/></Grid.ColumnDefinitions>
+          <TextBlock Text="6." Foreground="{StaticResource AccentBrush}" FontSize="16" FontWeight="Bold"/>
+          <TextBlock Grid.Column="1" Text="Установіть новий пароль, підтвердіть його і натисніть Застосувати, після цієї операції необхідно перезавантажити мікротік"
+                     Foreground="{StaticResource TextBrush}" FontSize="16" TextWrapping="Wrap" LineHeight="24"/>
+        </Grid>
+        <Grid Margin="0,18,0,0">
+          <Grid.ColumnDefinitions><ColumnDefinition Width="32"/><ColumnDefinition/></Grid.ColumnDefinitions>
+          <TextBlock Text="7." Foreground="{StaticResource AccentBrush}" FontSize="16" FontWeight="Bold"/>
+          <TextBlock Grid.Column="1" Text="Введіть новий Local IP, пароль і натисніть Connect"
+                     Foreground="{StaticResource TextBrush}" FontSize="16" TextWrapping="Wrap" LineHeight="24"/>
+        </Grid>
+        <Grid Margin="0,18,0,0">
+          <Grid.ColumnDefinitions><ColumnDefinition Width="32"/><ColumnDefinition/></Grid.ColumnDefinitions>
+          <TextBlock Text="8." Foreground="{StaticResource AccentBrush}" FontSize="16" FontWeight="Bold"/>
+          <TextBlock Grid.Column="1" Text="В Interface зробіть зрозумілу для вас назву для Name та натисніть Створити"
+                     Foreground="{StaticResource TextBrush}" FontSize="16" TextWrapping="Wrap" LineHeight="24"/>
+        </Grid>
+        <Grid Margin="0,18,0,0">
+          <Grid.ColumnDefinitions><ColumnDefinition Width="32"/><ColumnDefinition/></Grid.ColumnDefinitions>
+          <TextBlock Text="9." Foreground="{StaticResource AccentBrush}" FontSize="16" FontWeight="Bold"/>
+          <TextBlock Grid.Column="1" Text="Повторіть попередні кроки, починаючи з другого для іншого мікротіку у розділі Mikrotik 2"
+                     Foreground="{StaticResource TextBrush}" FontSize="16" TextWrapping="Wrap" LineHeight="24"/>
+        </Grid>
+        <Grid Margin="0,18,0,0">
+          <Grid.ColumnDefinitions><ColumnDefinition Width="32"/><ColumnDefinition/></Grid.ColumnDefinitions>
+          <TextBlock Text="10." Foreground="{StaticResource AccentBrush}" FontSize="16" FontWeight="Bold"/>
+          <TextBlock Grid.Column="1" Text="Підключіть інтернет кабель до мініпорту Wan в Mikrotik2 і натисніть на кнопку Перевірити з'єднання"
+                     Foreground="{StaticResource TextBrush}" FontSize="16" TextWrapping="Wrap" LineHeight="24"/>
+        </Grid>
+      </StackPanel>
+      </ScrollViewer>
+    </Border>
+    <Button Grid.Row="2" Content="Закрити" HorizontalAlignment="Right" Margin="0,18,0,0" Width="100" Click="Close_Click"/>
+  </Grid>
+</Window>

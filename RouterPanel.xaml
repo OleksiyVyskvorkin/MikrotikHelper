@@ -1,0 +1,114 @@
+<UserControl x:Class="MikrotikHelper.RouterPanel"
+ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+ <Grid Background="{StaticResource PanelBrush}" Margin="0">
+  <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition/></Grid.RowDefinitions>
+  <Grid Margin="28,18,28,10">
+   <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+   <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+   <TextBlock Text="{Binding RouterTitle, RelativeSource={RelativeSource AncestorType=UserControl}}" Foreground="White" FontSize="18" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,15,0"/>
+   <Grid Grid.Column="1">
+    <Grid.ColumnDefinitions><ColumnDefinition Width="92"/><ColumnDefinition/><ColumnDefinition/><ColumnDefinition Width="92"/><ColumnDefinition Width="92"/></Grid.ColumnDefinitions>
+    <TextBox x:Name="IpBox" Text="192.168.88.1" ToolTip="IP-адрес" Margin="0,0,6,0"/>
+    <TextBox x:Name="LoginBox" Grid.Column="1" Text="admin" ToolTip="Логін" Margin="0,0,6,0"/>
+    <PasswordBox x:Name="PasswordInput" Grid.Column="2" ToolTip="Пароль" Margin="0,0,6,0"/>
+    <Button x:Name="ConnectButton" Grid.Column="3" Content="Connect" Margin="0,0,6,0" Background="{StaticResource AccentBrush}" Foreground="#07150F" FontSize="10" FontWeight="Bold" Click="Connect_Click"/>
+    <Button x:Name="InternetCheckButton" Grid.Column="4" IsEnabled="False" Padding="5,3" FontSize="8.5" Click="InternetCheck_Click"><TextBlock Text="Перевірити з'єднання" TextWrapping="Wrap" TextAlignment="Center"/></Button>
+   </Grid>
+   <TextBlock Grid.Column="2" Text="{Binding RouterNumber, RelativeSource={RelativeSource AncestorType=UserControl}}" Foreground="#59677C" FontSize="11" FontWeight="Bold" Margin="14,0,0,0" VerticalAlignment="Center"/>
+   <TextBlock x:Name="ConnectionMessage" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Foreground="#E9AA57" FontSize="10" Margin="0,5,0,0" TextWrapping="Wrap"/>
+  </Grid>
+
+  <Grid Grid.Row="1" Margin="28,0,28,28">
+   <StackPanel x:Name="ConnectedContent" VerticalAlignment="Top">
+   <Border x:Name="QuickSetCard" Visibility="Collapsed" Margin="0,0,0,10" Background="{StaticResource CardBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="10">
+    <Grid>
+     <Grid.RowDefinitions><RowDefinition Height="44"/><RowDefinition x:Name="QuickSetContentRow" Height="Auto"/></Grid.RowDefinitions>
+     <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1" Padding="14,0">
+      <Grid VerticalAlignment="Center"><Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition/><ColumnDefinition Width="32"/></Grid.ColumnDefinitions><TextBlock Text="Quick Set" Foreground="White" FontWeight="Bold" VerticalAlignment="Center"/><TextBlock Grid.Column="1" Text="Не забудь змінити DHCP Range при зміні Local IP, а також після застосування змін - перезавантажити мікротік." Foreground="#F06F78" FontSize="11.5" Margin="14,0,8,0" VerticalAlignment="Center" TextWrapping="Wrap" LineHeight="15"/><Button x:Name="CollapseQuickSetButton" Grid.Column="2" Content="−" Width="28" Height="24" Padding="0" Background="Transparent" FontSize="16" ToolTip="Згорнути" Click="CollapseQuickSet_Click"/></Grid>
+     </Border>
+     <Grid x:Name="QuickSetContent" Grid.Row="1" Margin="14,9,14,10">
+      <Grid.RowDefinitions><RowDefinition Height="34"/><RowDefinition Height="34"/><RowDefinition Height="34"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+      <Grid.ColumnDefinitions><ColumnDefinition Width="70"/><ColumnDefinition/><ColumnDefinition Width="110"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+      <TextBlock Text="Local IP" Foreground="{StaticResource MutedBrush}" VerticalAlignment="Center"/>
+      <TextBox x:Name="LocalIpBox" Grid.Column="1" ToolTip="IPv4-адреса з префіксом, наприклад 192.168.89.1/24" TextChanged="LocalIp_Changed"/>
+      <CheckBox x:Name="DhcpServerCheck" Grid.Column="2" Content="DHCP Server" Foreground="White" VerticalAlignment="Center" Margin="14,0,0,0"/>
+      <Button x:Name="ApplyQuickSetButton" Grid.Column="3" Content="Застосувати" Margin="8,0,0,0" Background="{StaticResource AccentBrush}" Foreground="#07150F" FontWeight="Bold" Click="ApplyLocalIp_Click"/>
+      <TextBlock Grid.Row="1" Text="DHCP Range" Foreground="{StaticResource MutedBrush}" FontSize="10" VerticalAlignment="Center"/>
+      <TextBox x:Name="DhcpRangeBox" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" ToolTip="Наприклад 192.168.89.10-192.168.89.254"/>
+      <TextBlock Grid.Row="2" Text="Новий пароль" Foreground="{StaticResource MutedBrush}" FontSize="10" VerticalAlignment="Center"/>
+      <TextBox x:Name="NewPasswordBox" Grid.Row="2" Grid.Column="1" ToolTip="Залиште порожнім, якщо пароль змінювати не потрібно"/>
+      <Grid Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Margin="8,0,0,0">
+       <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition/></Grid.ColumnDefinitions>
+       <TextBlock Text="Підтвердити пароль" Foreground="{StaticResource MutedBrush}" FontSize="10" VerticalAlignment="Center" Margin="0,0,8,0"/>
+       <TextBox x:Name="ConfirmPasswordBox" Grid.Column="1" ToolTip="Підтвердження нового пароля"/>
+      </Grid>
+      <TextBlock x:Name="QuickSetStatus" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Margin="0,3,0,0" Foreground="#E9AA57" FontSize="10"/>
+     </Grid>
+    </Grid>
+   </Border>
+   <Border x:Name="EditorCard" Visibility="Collapsed" Background="{StaticResource CardBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="12" VerticalAlignment="Top">
+    <Grid>
+     <Grid.RowDefinitions><RowDefinition Height="36"/><RowDefinition x:Name="TabsRow" Height="32"/><RowDefinition x:Name="EditorContentRow"/><RowDefinition x:Name="ActionsRow" Height="46"/></Grid.RowDefinitions>
+     <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1" Padding="15,0">
+      <Grid><StackPanel Orientation="Horizontal" VerticalAlignment="Center"><TextBlock Text="◇" Foreground="{StaticResource AccentBrush}" FontSize="18" Margin="0,0,9,0"/><TextBlock Text="Interface" Foreground="White" FontWeight="Bold"/></StackPanel><Button x:Name="CollapseEditorButton" Content="−" HorizontalAlignment="Right" Width="28" Height="24" Padding="0" Background="Transparent" FontSize="16" ToolTip="Згорнути" Click="CollapseEditor_Click"/></Grid>
+     </Border>
+     <Border x:Name="TabsBar" Grid.Row="1" Background="#151C27" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1">
+      <StackPanel Orientation="Horizontal" Margin="14,0">
+       <Button x:Name="CreateTabButton" Content="Створення" Padding="12,5" Background="#213536" Click="CreateTab_Click"/>
+       <Button x:Name="InterfacesTabButton" Content="Інтерфейси" Padding="12,5" Background="Transparent" Click="InterfacesTab_Click"/>
+       <Button x:Name="DeleteTabButton" Content="Видалення" Padding="12,5" Background="Transparent" Foreground="#E8A0A8" Click="DeleteTab_Click"/>
+      </StackPanel>
+     </Border>
+     <Grid x:Name="CreateView" Grid.Row="2" Margin="16,9,16,7">
+      <Grid.ColumnDefinitions><ColumnDefinition Width="105"/><ColumnDefinition/><ColumnDefinition Width="82"/><ColumnDefinition/></Grid.ColumnDefinitions>
+      <Grid.RowDefinitions><RowDefinition Height="34"/><RowDefinition Height="34"/><RowDefinition Height="34"/><RowDefinition Height="34"/><RowDefinition Height="34"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+      <TextBlock Text="Name" Foreground="#BAC5D3" VerticalAlignment="Center" TextAlignment="Right" Margin="0,0,10,0"/><TextBox x:Name="NameBox" Grid.Column="1" Grid.ColumnSpan="3" TextChanged="Name_Changed"/>
+      <TextBlock Grid.Row="1" Text="MTU" Foreground="#BAC5D3" VerticalAlignment="Center" TextAlignment="Right" Margin="0,0,10,0"/><TextBox x:Name="MtuBox" Grid.Row="1" Grid.Column="1" Text="1420"/>
+      <TextBlock Grid.Row="1" Grid.Column="2" Text="Listen Port" Foreground="#BAC5D3" VerticalAlignment="Center" TextAlignment="Right" Margin="0,0,10,0"/><TextBox x:Name="PortBox" Grid.Row="1" Grid.Column="3" Text="13231"/>
+      <TextBlock Grid.Row="2" Text="IP Address" Foreground="#BAC5D3" VerticalAlignment="Center" TextAlignment="Right" Margin="0,0,10,0"/><TextBox x:Name="WireGuardIpBox" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" ToolTip="Наприклад 192.168.33.1/24" TextChanged="WireGuardIp_Changed"/>
+      <TextBlock Grid.Row="3" Text="Private Key" Foreground="#BAC5D3" VerticalAlignment="Center" TextAlignment="Right" Margin="0,0,10,0"/><PasswordBox x:Name="PrivateKeyBox" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" IsHitTestVisible="False" Focusable="False"/>
+      <TextBlock Grid.Row="4" Text="Public Key" Foreground="#BAC5D3" VerticalAlignment="Center" TextAlignment="Right" Margin="0,0,10,0"/><TextBox x:Name="PublicKeyBox" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" IsReadOnly="True"/>
+      <TextBlock x:Name="StatusText" Grid.Row="5" Grid.ColumnSpan="4" Foreground="#E9AA57" FontSize="10" Margin="105,3,0,0" TextWrapping="Wrap" Visibility="Collapsed"/>
+     </Grid>
+     <Grid x:Name="InterfacesView" Grid.Row="2" Visibility="Collapsed" Margin="14,9,14,9">
+      <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+      <Grid Grid.Row="0" Margin="0,0,0,6">
+       <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="70"/><ColumnDefinition Width="90"/><ColumnDefinition Width="100"/></Grid.ColumnDefinitions>
+       <TextBlock Text="Name" Foreground="{StaticResource MutedBrush}" FontSize="10"/><TextBlock Grid.Column="1" Text="MTU" Foreground="{StaticResource MutedBrush}" FontSize="10"/><TextBlock Grid.Column="2" Text="Listen Port" Foreground="{StaticResource MutedBrush}" FontSize="10"/><TextBlock Grid.Column="3" Text="Status" Foreground="{StaticResource MutedBrush}" FontSize="10"/>
+      </Grid>
+      <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" MaxHeight="170"><StackPanel x:Name="InterfacesList"/></ScrollViewer>
+      <Border x:Name="InterfaceDetails" Grid.Row="2" Visibility="Collapsed" Margin="0,8,0,0" Padding="10" Background="#101721" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6">
+       <Grid>
+        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="34"/><RowDefinition Height="34"/></Grid.RowDefinitions>
+        <TextBlock x:Name="DetailsTitle" Foreground="White" FontWeight="Bold" FontSize="12" Margin="0,0,0,6"/>
+        <TextBlock Grid.Row="1" Text="Public Key" Foreground="{StaticResource MutedBrush}" VerticalAlignment="Center"/>
+        <TextBox x:Name="DetailsPublicKey" Grid.Row="1" Margin="72,2,78,2" IsReadOnly="True"/>
+        <Button Grid.Row="1" Content="Копіювати" HorizontalAlignment="Right" Padding="8,5" Click="CopyPublicKey_Click"/>
+        <TextBlock Grid.Row="2" Text="Private Key" Foreground="{StaticResource MutedBrush}" VerticalAlignment="Center"/>
+        <PasswordBox x:Name="DetailsPrivateKey" Grid.Row="2" Margin="72,2,152,2" IsHitTestVisible="False" Focusable="False"/>
+        <TextBox x:Name="DetailsPrivateKeyVisible" Grid.Row="2" Margin="72,2,152,2" IsReadOnly="True" Visibility="Collapsed"/>
+        <Button x:Name="ShowPrivateKeyButton" Grid.Row="2" Content="Показати" HorizontalAlignment="Right" Margin="0,0,78,0" Padding="8,5" Click="ShowPrivateKey_Click"/>
+        <Button Grid.Row="2" Content="Копіювати" HorizontalAlignment="Right" Padding="8,5" Click="CopyPrivateKey_Click"/>
+       </Grid>
+      </Border>
+     </Grid>
+     <Grid x:Name="DeleteView" Grid.Row="2" Visibility="Collapsed" Margin="14,9,14,9">
+      <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition/></Grid.RowDefinitions>
+      <TextBlock Text="Виберіть інтерфейс для видалення" Foreground="{StaticResource MutedBrush}" FontSize="10" Margin="0,0,0,7"/>
+      <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" MaxHeight="205"><StackPanel x:Name="DeleteList"/></ScrollViewer>
+     </Grid>
+     <Border x:Name="CreateActions" Grid.Row="3" Background="#151C27" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,0,0" Padding="14,7">
+      <Grid><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock x:Name="WireGuardIpError" Foreground="#F06F78" FontSize="10" VerticalAlignment="Center" TextWrapping="Wrap" Margin="0,0,12,0"/><StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right"><Button Content="Скинути" Click="Reset_Click" Padding="11,6" Margin="0,0,7,0"/><Button Content="Нові ключі" Click="Keys_Click" Padding="11,6" Margin="0,0,7,0"/><Button x:Name="CreateInterfaceButton" Content="Створити" Click="Create_Click" Padding="11,6" Background="{StaticResource AccentBrush}" Foreground="#07150F" FontWeight="Bold"/></StackPanel></Grid>
+     </Border>
+    </Grid>
+   </Border>
+   </StackPanel>
+   <Border x:Name="DisconnectedPopup" Visibility="Visible" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,35,0,0" Padding="22,16" Background="#2B2025" BorderBrush="#A95762" BorderThickness="1" CornerRadius="10">
+    <StackPanel Orientation="Horizontal">
+     <TextBlock Text="●" Foreground="#E76F7A" FontSize="13" VerticalAlignment="Center" Margin="0,0,10,0"/>
+     <StackPanel><TextBlock Text="Немає підключення" Foreground="White" FontSize="13" FontWeight="Bold"/><TextBlock x:Name="PopupMessage" Text="Підключіться до MikroTik, щоб продовжити налаштування." Foreground="#D5A9AE" FontSize="11" Margin="0,3,0,0"/></StackPanel>
+    </StackPanel>
+   </Border>
+  </Grid>
+ </Grid>
+</UserControl>
